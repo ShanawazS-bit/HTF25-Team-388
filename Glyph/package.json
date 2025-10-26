@@ -1,0 +1,23 @@
+{
+  "name": "Glyph",
+  "version": "1.0.0",
+  "description": "Mintatix",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "erc721a": "^4.3.0",
+    "erc721a-upgradeable": "^4.3.0",
+    "hardhat": "^3.0.9"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.2.0",
+    "@openzeppelin/contracts-upgradeable": "^5.2.0"
+  },
+  "type": "module"
+}

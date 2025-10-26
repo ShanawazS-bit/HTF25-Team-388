@@ -1,0 +1,34 @@
+import { http, createConfig } from 'wagmi'
+import { mainnet, sepolia, hardhat} from 'wagmi/chains'
+import { coinbaseWallet, injected, walletConnect } from 'wagmi/connectors'
+import { metaMask } from '@wagmi/connectors'
+
+
+export const config = createConfig({
+  chains: [mainnet, sepolia, hardhat],
+  connectors: [
+    metaMask({
+      dappMetadata: {
+      name: 'Glyph',
+      url: 'https://Gliph.com', //purchase the domain ?? nahh 
+      iconUrl: 'https://dweb.link/ipfs/bafkreifkcbkj4t2ass5gjm7oriq2odo3ibl43qucqcpzgsmyvtm23vth3i', 
+    }}),
+  
+    coinbaseWallet({appName: 'Glyph', appLogoUrl: '../icons/Glyph_ico_transparent.png'}),
+    injected(),
+    walletConnect({projectId: import.meta.env.VITE_WC_PROJECT_ID})
+  ],
+  transports: {
+    [mainnet.id]: http(),
+    [sepolia.id]: http(),
+    [hardhat.id]: http(),
+
+  },
+
+})
+
+declare module 'wagmi' {
+  interface Register {
+    config: typeof config
+  }
+}

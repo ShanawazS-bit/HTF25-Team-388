@@ -1,0 +1,385 @@
+/*GLOBAL CSS */
+
+@font-face {
+  font-family: "ByteBounce";
+  src: url('/fonts/ByteBounce.ttf');  
+}
+
+/*global variables */
+:root {
+  /* principal colors  */
+  --bg-dark: #121212; /* backgorund */
+  --bg-content: #1e1e1e; /* for cards */
+  --bg-item: #2c2c2c; /* ticketItems */
+  --bg-surface: #141414; /* color for elements that are on top of another element */
+  --text-color: #c0aede; /* base color fo text */
+  --text-color-light: #e0d8f0; /* base color but highlighted */
+  --border-color: #333; /* generic border color  */
+  --border-color-accent: #c0aede; /* border color for basic text */
+  --overlay-dark-bg: rgba(0, 0, 0, 0.75); /*background for the backgorind cards like disconnect or switchChain */
+
+  /* colors for notifications or buttons */
+  --primary-accent: #a87ffb; /* for buttons */
+  --primary-accent-darker: #8a4fff; /* button gradients */
+  --error-color: #ff6b6b; /* errors */
+  --success-color: #90ee90; /* correct */
+  --warning-color: #ffd700; /* warnings */
+  --info-color: #5bc0de; /* info */
+  --disabled-bg: #555; /* disabled element */
+  --disabled-text: #999; /* disabled text */
+
+
+  /*RGB colors to use it with transparencies in RGBA*/
+  --text-color-rgb: 192, 174, 222;
+  --bg-surface-rgb: 20, 20, 20;
+  --primary-accent-rgb: 168, 127, 251;
+  --error-rgb: 255, 107, 107;
+  --success-rgb: 144, 238, 144;
+  --warning-rgb: 255, 215, 0;
+  --info-rgb: 91, 192, 222;
+
+  /* tipography and better readability */
+  color-scheme: light dark;
+  font-family: "ByteBounce", monospace; /* Use the new pixel font */
+  font-synthesis: none; /* just in case to prevent browser mistakes*/
+  font-weight: 400; /* standard font weight */
+  line-height: 1.5; 
+  /*better readability */
+  text-rendering: optimizeLegibility; 
+  -webkit-font-smoothing: none; /* For a crisp, non-blurry pixel font look */
+  -moz-osx-font-smoothing: none;
+  -webkit-text-size-adjust: 100%; /*prevents automatically resizing when rotating screens like phones*/
+}
+
+ /******Global Styles******/
+
+ #background-video {
+  /* Position it in the background */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+
+  /* Make it cover the entire screen */
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+
+  /* This is the key part: it scales the video to cover the area, cropping as needed */
+  object-fit: cover;
+}
+
+/* Optional: Ensure your main content has a background to be readable if the video is loading */
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+ body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-dark);
+  background-color: transparent; /* Allow video to show through */
+  color: var(--text-color);
+  font-family: inherit; /* inherits from :root */
+  min-height: 100vh;
+}
+
+/* Overlay to darken the background video */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4); /* Adjust the last value (0.4) to make it darker or lighter */
+  z-index: 0; /* Sits between the video (-1) and the content (1) */
+}
+
+/******* base titles *******/
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-weight: 600; /* more weight */
+  color: var(--text-color-light); /* light color for titles*/
+}
+
+/* Title for the main landing page */
+.landing-title {
+  
+  font-size: 8rem;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5); /* Add a subtle shadow for better readability */
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+a {
+  color: var(--primary-accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: var(--text-color-light);
+}
+
+/******** default lists and buttons *********/
+ul, ol {
+  padding-left: 0;
+  list-style: none;
+  margin: 0;
+}
+/******** generic buttons  *********/
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+}
+.buttons-container {
+  display: flex;
+  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+/*base style for button*/
+button.button, /* apply .button to <button> eleemnts */
+a.button {      /* applies to .button -->  <a> elements*/
+  display: inline-block; 
+  background-color: var(--text-color);
+  color: var(--bg-dark);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  margin: 0.5rem; 
+  border-radius: 6px; 
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500; 
+  text-align: center;
+  text-decoration: none; 
+  transition: opacity 0.2s ease-in-out, background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
+}
+
+button.button:hover,
+a.button:hover {
+  opacity: 0.9;
+}
+
+
+/*all components will include border box, simplefied way to reduce overflows with paddings and marges*/
+*, *::before, *::after { /*all ellemnets ant pseudo elemnts before and after*/
+  box-sizing: border-box;
+}
+
+
+.main-layout {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex; /* to implement de side menu easily*/
+  background-color: transparent; /* Ensure layout doesn't hide the video */
+}
+
+.content {
+  flex-grow: 1; /*tries to use all the space  */
+  padding: 2rem;
+  padding-top: 5rem; /* space for the fixed header */
+  /* margin left will be evaulated by the media queries when the menu is visible */
+}
+
+/* Special centering for the landing page (when not logged in) */
+.main-layout:not(.menu-visible) .page-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertically center */
+  align-items: center;     /* Horizontally center */
+  min-height: calc(100vh - 5rem); /* Full viewport height minus header padding */
+}
+
+.page-container {
+  width: 100%;
+  max-width: 1200px; /*limt the width for ultra big screens */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.spacer {
+  height: 1rem;
+}
+
+
+
+/***** Type of messages *******/
+
+.message {
+  text-align: center;
+  padding: 1rem 1.5rem; /* more padding thn other css*/
+  font-size: 1rem; 
+  margin: 1.5rem 0; /* a bit more vertical space */
+  border-radius: 8px;
+  border: 1px solid transparent; /* looks niceee*/
+  word-break: break-all;
+}
+
+.message.loading-message {
+  color: var(--text-color);
+}
+
+.message.info-message {
+  color: var(--text-color); 
+  background-color: rgba(var(--info-rgb, 91, 192, 222), 0.1); /* for the bg it's neeedti the rgb and then it uses rgba for transparencies */
+  border-color: rgba(var(--info-rgb, 91, 192, 222), 0.2);
+}
+.message.success-message {
+  color: var(--success-color);
+  background-color: rgba(var(--success-rgb, 144, 238, 144), 0.1); 
+  border-color: rgba(var(--success-rgb, 144, 238, 144), 0.3);
+}
+.message.warning-message {
+  color: var(--warning-color);
+  background-color: rgba(var(--warning-rgb, 255, 215, 0), 0.1);
+  border-color: rgba(var(--warning-rgb, 255, 215, 0), 0.3);
+}
+.message.error-message {
+  color: var(--error-color);
+  background-color: rgba(var(--error-rgb, 255, 107, 107), 0.1);
+  border-color: rgba(var(--error-rgb, 255, 107, 107), 0.3);
+  font-weight: 500; /* bolder for error messages */
+}
+
+/*warnign message when the contract is roning out of ticket stock*/
+.low-supply-warning {
+  color: var(--warning-color);
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.05rem;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem 1rem;
+  background-color: rgba(var(--warning-rgb, 255, 215, 0), 0.08);
+  border-radius: 4px;
+  border: 1px solid rgba(var(--warning-rgb, 255, 215, 0), 0.2);
+}
+
+/*message that the web returns with the transaction hash */
+.transaction-hash {
+  text-align: center;
+  margin-top: 1rem; /* more space for the transaction hash  */
+  font-size: 0.9rem;
+  word-break: break-all; /* hashes are too large, its better to put something smaller */
+  color: var(--text-color);
+  opacity: 0.8;
+}
+.transaction-hash a {
+  color: var(--primary-accent);
+  text-decoration: underline;
+}
+.transaction-hash a:hover {
+  color: var(--text-color-light);
+}
+
+
+/*************** generic modal ****************/
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-dark-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000; /* modals has to be at the top */
+  padding: 1rem;
+  cursor: pointer; /* closed by js */
+
+  /*blur for the backgorund of the modal*/
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px); 
+}
+
+.modal-content {
+  background: var(--bg-surface);
+  color: var(--text-color);
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto; /* if the content is too large will auto fit and will make the user to scroll down */
+  position: relative; /* close btn*/
+  border: 1px solid var(--border-color);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  text-align: center;
+  cursor: default; /* the cursor on modals have to be normal */
+}
+
+.modal-close-button {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  line-height: 1; /*no extra heigh */
+  color: var(--text-color);
+  opacity: 0.6;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+  padding: 0.2rem; /* hit box for the click */
+}
+.modal-close-button:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Video Background Styling */
+#background-video {
+  /* Position it in the background */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+
+  /* Make it cover the entire screen */
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+
+  /* Scale the video to cover the area, cropping as needed */
+  object-fit: cover;
+}
+
+
+/*****  MEDIA QUERIES *****/  
+
+/******Mobile (<= 600px)******/
+@media (max-width: 600px) {
+
+  .content {
+    padding: 1rem; /* less padding  */
+    padding-top: 4rem; /* less header space*/
+    padding-bottom: 100px; /* space for menu  */
+  }
+
+  .landing-title {
+    font-size: 3.5rem; /* Adjust for mobile */
+  }
+
+  .main-layout.menu-visible .content {
+    margin-left: 0; /* without horizontal borders */
+  }
+
+}
